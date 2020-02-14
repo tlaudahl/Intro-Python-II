@@ -1,10 +1,11 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+"North of you, the cave mount beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -17,8 +18,7 @@ the distance, but there is no way across the chasm."""),
 to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+chamber! This room contains double the loot as the other rooms! The only exit is to the south."""),
 }
 
 
@@ -49,3 +49,21 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+player = Player(input("What is your name? "), room['outside'], [])
+print(f'Hello, {player.name}')
+
+
+print(player.current_room)
+while True:
+    print(f'The room currently holds {len(player.current_room.items)} items {str(player.current_room.items).strip("[]")}\n')
+
+    cmd = input('=> ')
+    if ' ' in cmd:
+        player.modify_stash(cmd.split(' ')[0], ' '.join(cmd.split(' ')[1:]))
+    elif cmd in ['n', 's', 'e', 'w']:
+        player.travel(cmd)
+    elif cmd == 'q':
+        print('Goodbye!')
+        exit()
+    else:
+        print('I did not understand that command')
