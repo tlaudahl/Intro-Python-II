@@ -19,17 +19,19 @@ class Player:
     def modify_stash(self, command, item):
         '''
         Method that allows you to modify the stash of the player. Takes in a command, and an item.
-        Ex: modify_stash('take', sword)
+        Ex: modify_stash('take', 'sword')
         That will add a sword to the player's items and remove the sword from that room
         '''
         if command == 'take' and item == 'all':
-            if (len(self.stash) + len(self.current_room.items) <= 6):
+            if len(self.current_room.items) > 6:
+                print('There are too many items to take')
+            elif (len(self.stash) + len(self.current_room.items) <= 6):
                 self.stash.extend(self.current_room.items)
                 self.current_room.items = []
                 print(f'You currently have {str(self.stash).strip("[]")} ')
                 return
             else:
-                print(f'You are carrying too many items, you can only carry 6, you currently are carrying {len(self.stash)}')
+                print(f'You would be carrying too many items, you can only carry 6, you currently are carrying {len(self.stash)}')
                 return
         elif command == 'take' and len(self.stash) <= 6:
             try:
@@ -40,6 +42,13 @@ class Player:
             except ValueError:
                 print('That item does not exist in the room')
                 return
+        elif command == 'drop' and item == 'all':
+            if len(self.stash) == 0:
+                print('You have no items to drop!')
+            else:
+                self.current_room.items.extend(self.stash)
+                self.stash = []
+                print('You dropped all your items')
         elif command == 'drop':
             try:
                 self.stash.remove(item)
