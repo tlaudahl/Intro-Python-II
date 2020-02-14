@@ -57,9 +57,9 @@ print(player.current_room)
 while True:
     print(f'The room currently holds {len(player.current_room.items)} items {str(player.current_room.items).strip("[]")}\n')
 
-    cmd = input('=> ').lower()
+    cmd = input('=> ')
     if ' ' in cmd:
-        player.modify_stash(cmd.split(' ')[0], cmd.split(' ')[1])
+        player.modify_stash(cmd.split(' ')[0], ' '.join(cmd.split(' ')[1:]))
     elif cmd in ['n', 's', 'e', 'w']:
         player.travel(cmd)
     elif cmd == 'q':
